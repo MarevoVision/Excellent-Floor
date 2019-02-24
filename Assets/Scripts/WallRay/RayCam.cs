@@ -12,9 +12,11 @@ public class RayCam : MonoBehaviour {
     public GameObject planeMinusDot;
     public GameObject btn_Plus;
     public GameObject btn_minus;
+    public bool plusDisable;
     public bool minusTarget;
     public bool destroyPoint;
     private bool oneShow;
+    public float maxDistanceRay = 10f;
 
     //public float findingSquareDist = 0.5f;
     // Use this for initialization
@@ -23,19 +25,22 @@ public class RayCam : MonoBehaviour {
        minusTarget = false;
         destroyPoint = false;
         oneShow = true;
+        plusDisable = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-            Vector3 point = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0);
-            Ray ray = Camera.main.ScreenPointToRay(point);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        Vector3 point = new Vector3(Camera.main.pixelWidth / 2, Camera.main.pixelHeight / 2, 0);
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(point);
+           
+        if (Physics.Raycast(ray, out hit, maxDistanceRay))
         {
-
+            //Debug.DrawLine(ray.origin, hit.point);
             if (hit.transform.gameObject.layer == 11 || hit.transform.gameObject.layer == 12)
             {
-                target.transform.position = hit.point;
+                target.transform.position = new Vector3(hit.point.x, hit.point.y - 0.02f, hit.point.z);
                 target.transform.rotation = hit.transform.rotation;
                 target.SetActive(true);
                 _UIScan.SetActive(false);
@@ -70,7 +75,14 @@ public class RayCam : MonoBehaviour {
             if (hit.transform.gameObject.layer != 12)
             {
                 planeMinusDot.SetActive(false);
-                btn_Plus.SetActive(true);
+                if (!plusDisable)
+                {
+                    btn_Plus.SetActive(true);
+                }
+                if (plusDisable)
+                {
+                    btn_Plus.SetActive(false);
+                }
                 btn_minus.SetActive(false);
                 minusTarget = false;
 

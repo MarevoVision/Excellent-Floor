@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: mat1
   m_Shader: {fileID: 4800000, guid: e24f1a4b39edf4bf883b280adcb12b66, type: 3}
-  m_ShaderKeywords: _NORMALMAP
+  m_ShaderKeywords: _DETAIL_MULX2 _NORMALMAP _SPECGLOSSMAP
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -36,12 +36,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 03e87d08928854385b16e8cad81538f2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6d4e8403726b347439e2db12c0255943, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: e8badd1eb55c44fd0ac80670cee69a8b, type: 3}
+        m_Scale: {x: 0.000001111111, y: 0.0000001111111}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
         m_Texture: {fileID: 0}
@@ -53,10 +53,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.000001111111, y: 0.000001111111}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e8badd1eb55c44fd0ac80670cee69a8b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2bfb6e419ef52409380a09a852a767f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex1:
@@ -173,8 +173,8 @@ Material:
     - _Parallax: 0.02
     - _RimPower: 2
     - _RoughnessFactor: 1
-    - _Scale: 1.5
-    - _Shininess: 0.95
+    - _Scale: 3
+    - _Shininess: 1
     - _SizeX: 20
     - _SizeY: 20
     - _SmoothnessTextureChannel: 0
@@ -207,7 +207,7 @@ Material:
     - LightDir: {r: 0, g: 0, b: 0, a: 1}
     - _BaseColorFactor: {r: 1, g: 1, b: 1, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
-    - _Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+    - _Color: {r: 0.5647059, g: 0.5647059, b: 0.5647059, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _Emission: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}

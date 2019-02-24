@@ -233,6 +233,7 @@ public static class Poly2Mesh {
 		msh.uv = uv;
 		msh.RecalculateNormals();
 		msh.RecalculateBounds();
+        msh.RecalculateTangents();
 		//UnityEngine.Profiling.Profiler.Exit(profileID);
 		return msh;
 	}
@@ -281,6 +282,7 @@ public static class Poly2Mesh {
 		msh.uv = uv;
 		msh.RecalculateNormals();
 		msh.RecalculateBounds();
+        msh.RecalculateTangents();
 		if (fullDebug) Debug.Log("Poly2Mesh.CreateTriangle 5");
 
 		//UnityEngine.Profiling.Profiler.Exit(profileID);

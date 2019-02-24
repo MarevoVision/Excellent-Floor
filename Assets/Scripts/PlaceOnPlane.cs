@@ -46,8 +46,9 @@ public class PlaceOnPlane : MonoBehaviour
     [Header("Смена материалов")]
     public ChangeMaterial _changeMaterial;
     public bool changePlaneMode;
-    public SwipeAnim _swipeAnim;
-    public SwipeAnimMenu _swipeAnimMenu;
+    public Texture transperentDetect;
+    public Texture gridDetect;
+
     /*
     [Tooltip("Эффект для генерации стены.")]
     [Header("Эффект")]
@@ -66,6 +67,8 @@ public class PlaceOnPlane : MonoBehaviour
     public GameObject _ToturialUI;
     public GameObject _UIInterface;
     public GameObject _S_WRLD_P;
+    public GameObject btn_Plus;
+    public GameObject _Btn_Restart;
     private bool restartBool;
 
     public GameObject _TextBox_1, _TextBox_2, _TextBox_3, _TextBox_4;
@@ -80,7 +83,7 @@ public class PlaceOnPlane : MonoBehaviour
     [Header("Маштаб и цена")]
     private float areaSum;
     private float price;
-    private float rolls;
+    public float rolls;
     public float priceRoll;
     public Text txt_areaSum, txt_price, txt_rolls;
     private bool start;
@@ -88,14 +91,18 @@ public class PlaceOnPlane : MonoBehaviour
 
     public float xyArea;
 
-    [Tooltip("Скрипты которые используются.")]
-    [Header("Blur")]
-    public Material blur;
+    //[Tooltip("Скрипты которые используются.")]
+    //Header("Blur")]
+    //public Material blur;
 
     [Tooltip("Скрипты которые используются.")]
     [Header("Доп. скрипты")]
     public RayCam _RayCam;
 
+
+
+    private int numberItemMenu;
+    public int NumberItemMenu { get => numberItemMenu; set => numberItemMenu = value; }
     /// <summary>
     /// The object instantiated as a result of a successful raycast intersection with a plane.
     /// </summary>
@@ -197,41 +204,41 @@ public class PlaceOnPlane : MonoBehaviour
                 }
             }
 
-            GameObject lr = new GameObject();
-            lr.name = "PolygonLR";
-            lr.transform.parent = polyMesh.transform;
+            //GameObject lr = new GameObject();
+            //lr.name = "PolygonLR";
+            //lr.transform.parent = polyMesh.transform;
             //lr.AddComponent(typeof(MeshRenderer));
             //MeshFilter filterLR = lr.AddComponent(typeof(MeshFilter)) as MeshFilter;
             //MeshRenderer rendererLR = lr.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
-            LineRenderer lineLR = lr.AddComponent(typeof(LineRenderer)) as LineRenderer;
+           //LineRenderer lineLR = lr.AddComponent(typeof(LineRenderer)) as LineRenderer;
 
             //lr.transform.position = new Vector3(polyMesh.transform.position.x, polyMesh.transform.position.y + 0.01f, polyMesh.transform.position.z);
-            lr.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+            //lr.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
 
-            lineLR.receiveShadows = false;
-            lineLR.loop = true;
-            lineLR.useWorldSpace = true;
-            lineLR.material = blur;
-            lineLR.positionCount = lineRenderer.positionCount;
-            lineLR.SetPositions(points.ToArray());
+            //lineLR.receiveShadows = false;
+            //lineLR.loop = true;
+            //lineLR.useWorldSpace = true;
+            //lineLR.material = blur;
+            //lineLR.positionCount = lineRenderer.positionCount;
+            //lineLR.SetPositions(points.ToArray());
 
-            for (int i = 0; i < lineLR.positionCount; i++)
-            {
-                lineLR.SetPosition(i, new Vector3(points[i].x, GameObject.FindGameObjectWithTag("ARPlacedPlaneForDot").transform.position.y + 0.01f, points[i].z));
-            }
+           //for (int i = 0; i < lineLR.positionCount; i++)
+            //{
+            //    lineLR.SetPosition(i, new Vector3(points[i].x, GameObject.FindGameObjectWithTag("ARPlacedPlaneForDot").transform.position.y + 0.01f, points[i].z));
+            //}
 
-            lineLR.startWidth = 0.1f;
-            lineLR.alignment = LineAlignment.TransformZ;
+           //lineLR.startWidth = 0.1f;
+            //lineLR.alignment = LineAlignment.TransformZ;
 
             //gob.AddComponent<BoxCollider>().size = new Vector3(1f, 1f, 0.001f);
 
             //m2
             areaSum = AreaOfMesh(polyMesh.GetComponent<MeshFilter>().sharedMesh);
             xyArea = areaSum;
-            txt_areaSum.text = "~ " + areaSum.ToString("#.##") + " m2";
+            txt_areaSum.text = "Площа: " + areaSum.ToString("#.##") + " м2";
             if (areaSum < 1)
             {
-                txt_areaSum.text = "~ 0" + areaSum.ToString("#.##") + " m2";
+                txt_areaSum.text = "Площа: 0" + areaSum.ToString("#.##") + " м2";
             }
             _changeMaterial.work = true;
             start = true;
@@ -239,8 +246,7 @@ public class PlaceOnPlane : MonoBehaviour
             lineRenderer.positionCount = 0;
             punkDot.positionCount = 0;
             ClearAllDots();
-            _changeMaterial.Material1();
-            _swipeAnim.UpSwipe();
+            _changeMaterial.GoAR();
 
 
             first_Toturial = false;
@@ -257,6 +263,12 @@ public class PlaceOnPlane : MonoBehaviour
 
             _ToturialUI.SetActive(false);
 
+            punktBox.SetActive(true);
+            focus.SetActive(false);
+            focus.transform.GetChild(0).gameObject.SetActive(false);
+            _Btn_Restart.SetActive(true);
+            _RayCam.plusDisable = true;
+            btn_Plus.SetActive(false);
         }
     }
     void Awake()
@@ -296,6 +308,7 @@ public class PlaceOnPlane : MonoBehaviour
             {
                 go.GetComponent<MeshCollider>().convex = false;
                 go.GetComponent<MeshCollider>().enabled = false;
+                go.GetComponent<MeshRenderer>().material.mainTexture = transperentDetect;
 
             }
             _ARSessionOrigin.GetComponent<ARPlaneManager>().enabled = false;
@@ -330,6 +343,7 @@ public class PlaceOnPlane : MonoBehaviour
         {
             goC.GetComponent<MeshCollider>().convex = true;
             goC.GetComponent<MeshCollider>().enabled = true;
+            goC.GetComponent<MeshRenderer>().material.mainTexture = gridDetect;
 
         }
 
@@ -356,14 +370,14 @@ public class PlaceOnPlane : MonoBehaviour
         _S_WRLD_P.SetActive(true);
 
         areaSum = 0;
-        txt_areaSum.text = "~ " + areaSum.ToString() + " m2";
+        txt_areaSum.text = "Площа: " + areaSum.ToString() + " m2";
 
         rolls = 0;
 
-        txt_rolls.text = rolls.ToString() + " pack";
+        txt_rolls.text = "Кількість упаковок: " + rolls.ToString();
 
         price = 0;
-        txt_price.text = "$" + price.ToString();
+        txt_price.text = price.ToString("#.##") + "  грн";
 
 
         first_Toturial = false;
@@ -380,6 +394,11 @@ public class PlaceOnPlane : MonoBehaviour
 
         _ToturialUI.SetActive(false);
         focus.SetActive(false);
+        punktBox.SetActive(false);
+        _Btn_Restart.SetActive(false);
+        focus.transform.GetChild(0).gameObject.SetActive(true);
+        _RayCam.plusDisable = false;
+        btn_Plus.SetActive(true);
     }
 
     public void ClearAllDots()
@@ -420,34 +439,58 @@ public class PlaceOnPlane : MonoBehaviour
         {
             if(_changeMaterial.usenowNumber == 1)
             {
-                rolls = Mathf.Ceil(areaSum / 1.5f);
+                rolls = Mathf.Ceil(areaSum / 1.08f);
             }
             if (_changeMaterial.usenowNumber == 2)
             {
-                rolls = Mathf.Ceil(areaSum / 2.3f);
+                rolls = Mathf.Ceil(areaSum / 1.08f);
             }
             if (_changeMaterial.usenowNumber == 3)
             {
-                rolls = Mathf.Ceil(areaSum / 1.8f);
+                rolls = Mathf.Ceil(areaSum / 1.0f);
             }
             if (_changeMaterial.usenowNumber == 4)
             {
-                rolls = Mathf.Ceil(areaSum / 3.0f);
+                rolls = Mathf.Ceil(areaSum / 1.064f);
+            }
+            if (_changeMaterial.usenowNumber == 5)
+            {
+                rolls = Mathf.Ceil(areaSum / 1.014f);
+            }
+            if (_changeMaterial.usenowNumber == 6)
+            {
+                rolls = Mathf.Ceil(areaSum / 1.012f);
+            }
+            if (_changeMaterial.usenowNumber == 7)
+            {
+                rolls = Mathf.Ceil(areaSum / 1.014f);
+            }
+            if (_changeMaterial.usenowNumber == 8)
+            {
+                rolls = Mathf.Ceil(areaSum / 1.08f);
+            }
+            if (_changeMaterial.usenowNumber == 9)
+            {
+                rolls = Mathf.Ceil(areaSum / 1.117f);
+            }
+            if (_changeMaterial.usenowNumber == 10)
+            {
+                rolls = Mathf.Ceil(areaSum / 1.0f);
             }
 
             if (rolls < 2)
             {
                 rolls = 1;
 
-                txt_rolls.text = rolls.ToString() + " pack";
+                txt_rolls.text = "Кількість упаковок: " + rolls.ToString();
             }
             if (rolls >= 2)
             {
-                txt_rolls.text = rolls.ToString() + " packs";
+                txt_rolls.text = "Кількість упаковок: " + rolls.ToString();
             }
 
             price = priceRoll * rolls;
-            txt_price.text = "$" + price.ToString();
+            txt_price.text = price.ToString("#.##") + "  грн";
             _changeMaterial.work = false;
         }
 
